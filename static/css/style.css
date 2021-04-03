@@ -8,7 +8,6 @@ img {
     position: absolute;
     bottom: 0;
     width: 100%;
-    padding-top: 10px;
 }
 
 .search-container {
@@ -22,7 +21,6 @@ img {
 
 form {
     background-color: rgba(212, 212, 212, 0.1);
-    width: 800px;
     height: 44px;
     border-radius: 5px;
     display: flex;
