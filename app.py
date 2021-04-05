@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from datetime import datetime
+import stockModel
 
 
 #-----------------------------------------------#
@@ -17,9 +17,16 @@ app = Flask(__name__, static_folder="static")
 #-----------------------------------------------#
 
 @app.route("/")
-def routes():
+def home():
+    dates = stockModel.getStockDates('FB')
+    closeData = stockModel.getStockClose('FB')
+    companyName = stockModel.getCompanyName('FB')
+    # print(dates)
+    return render_template("index.html", labels=dates, data=closeData, cName=companyName)
 
-    return render_template("index.html")
+@app.route("/Project Scope")
+def info():
+    return render_template("")
 
 
 

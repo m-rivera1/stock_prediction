@@ -1,3 +1,7 @@
+main {
+    width: 100% !important;
+}
+
 img {
     padding: 10px;
     float: left;

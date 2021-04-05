@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
 import tensorflow
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import yfinance as yf
 import requests
+import json
+import datetime as dt
 
 from matplotlib.pylab import rcParams
 rcParams['figure.figsize'] = 20, 10
@@ -21,34 +23,43 @@ def queryByCompany(searchparam):
     for x in results['ResultSet']['Result']:
         ticker_company_list.append(x['name'])
         ticker_list.append(x['symbol'])
-    print(ticker_company_list)
 
 
 def getStockData(symbol):
 
     ticker = yf.Ticker(symbol)
-    print(ticker.info['longName'])
-    createDataFrame(ticker)
+    return ticker
+
 
 def createDataFrame(ticker):
-    df = pd.DataFrame(ticker.history(period="max")).reset_index()
+    df = pd.DataFrame(ticker.history(period="5y")).reset_index()
+    return df
 
-    trading_days = df['Date'].count()
-    training_set = .7 * trading_days
-    print(int(training_set))
 
-    companyName = ticker.info['longName']
+def getStockDates(ticker):
+    t = getStockData(ticker)
+    df = createDataFrame(t)
+    df["Date"] = pd.to_datetime(df.Date, format="%Y-%m-%d")
+    dates = df.Date.apply(lambda x: x.strftime("%Y-%m-%d"))
 
-    showOriginalPlot(df,companyName)
+    data = dates.to_list()
 
-def showOriginalPlot(df, companyName):
-    df["Date"]=pd.to_datetime(df.Date,format="%Y-%m-%d")
-    df.index=df['Date']
-    plt.figure(figsize=(16,8))
-    plt.plot(df["Close"],label='Close Price history')
-    plt.legend()
-    plt.title(companyName)
-    plt.show() 
+    return data
 
-queryByCompany('micros')
-getStockData('DIS')
+
+def getStockClose(ticker):
+    t = getStockData(ticker)
+    df = createDataFrame(t)
+    close = df['Close'].to_list()
+
+    return close
+
+
+def getCompanyName(ticker):
+    t = getStockData(ticker)
+    cName = t.info['longName']
+
+    return cName
+
+
+# getStockData('DIS')
