@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, request, render_template, redirect, url_for
 import stockModel
 
 
@@ -6,29 +6,27 @@ import stockModel
 #              Initialize the app               #
 #-----------------------------------------------#
 app = Flask(__name__, static_folder="static")
-
-#-----------------------------------------------#
-#              Global Variables                 #
-#-----------------------------------------------#
-
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = -1
 
 #-----------------------------------------------#
 #                   Routes                      # 
 #-----------------------------------------------#
 
 @app.route("/")
+def default():
+
+    return render_template("index.html")
+
+@app.route("/get-stock",methods=['GET','POST'])
 def home():
-    dates = stockModel.getStockDates('FB')
-    closeData = stockModel.getStockClose('FB')
-    companyName = stockModel.getCompanyName('FB')
-    # print(dates)
+    if request.method == 'POST':
+        ticker = request.form['search']
+        dates = stockModel.getStockDates(ticker)
+        closeData = stockModel.getStockClose(ticker)
+        companyName = stockModel.getCompanyName(ticker)
+
+
     return render_template("index.html", labels=dates, data=closeData, cName=companyName)
-
-@app.route("/Project Scope")
-def info():
-    return render_template("")
-
-
 
 
 

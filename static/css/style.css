@@ -2,8 +2,9 @@ main {
     width: 100% !important;
 }
 
-img {
+#logo {
     padding: 10px;
+    margin-left: 10px;
     float: left;
     border-radius: 15px;
 }

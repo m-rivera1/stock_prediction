@@ -21,13 +21,13 @@
 </head>
 
 <body class="bg-dark">
-    <img src="{{ url_for('static', filename='images/logo.jpg')}}" alt="Bull vs. Bear" width="88" height="88">
+    <img id="logo" src="{{ url_for('static', filename='images/logo.jpg')}}" alt="Bull vs. Bear" width="88" height="88">
     <main class="container-xxl">
 
         <div class="search-container">
-            <form method="POST" autocomplete="off" role="search" id="form"
+            <form  action="/get-stock" method="POST" autocomplete="off" role="search" id="form"
                 class="text-center col-xs-12 col-sm-12 col-md-10 col-lg-10">
-                <input type="search" id="query" placeholder="Search Company or Stock Ticker...">
+                <input type="text" name="search" id="query" placeholder="Search Company or Stock Ticker...">
                 <button id="searchBtn" type='submit' class='btn-default'>
                     <svg viewBox="0 0 1024 1024">
                         <path class="path1"
@@ -47,7 +47,7 @@
                 labels.push('{{ i }}')
                 '{% endfor %}'
                 '{% for i in data %}'
-                closeData.push('{{ i }}')
+                closeData.push(parseFloat('{{ i }}').toFixed(2))
                 '{% endfor %}'
                 console.log(closeData)
                 console.log(labels)
