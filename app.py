@@ -1,44 +1,50 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, session, redirect, url_for
 import stockModel
-
 
 #-----------------------------------------------#
 #              Initialize the app               #
 #-----------------------------------------------#
 app = Flask(__name__, static_folder="static")
+app.secret_key = '*55ro8LThAD-po#i'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = -1
 
 #-----------------------------------------------#
-#                   Global Variables            # 
+#                   Global Variables            #
 #-----------------------------------------------#
 ticker = ''
 
 #-----------------------------------------------#
-#                   Routes                      # 
+#                   Routes                      #
 #-----------------------------------------------#
+
 
 @app.route("/")
 def default():
 
     return render_template("index.html")
 
-@app.route("/get-stock",methods=['GET','POST'])
+
+@app.route("/get-stock", methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
-        ticker = request.form['search']
-        dates = stockModel.getStockDates(ticker)
-        closeData = stockModel.getStockClose(ticker)
-        companyName = stockModel.getCompanyName(ticker)
+        session['ticker'] = request.form['search']
+        dates = stockModel.getStockDates(session['ticker'])
+        closeData = stockModel.getStockClose(session['ticker'])
+        companyName = stockModel.getCompanyName(session['ticker'])
+
+        session['companyname'] = companyName
+
+    return render_template("index.html",
+                           labels=dates,
+                           data=closeData,
+                           cName=companyName)
 
 
-    return render_template("index.html", labels=dates, data=closeData, cName=companyName)
-
-@app.route("/stock-analysis",methods=['GET','POST'])
+@app.route("/stock-analysis", methods=['GET', 'POST'])
 def model():
     if request.method == 'POST':
-        ticker = 'AMZN'
+        ticker = session['ticker']
         dataset = stockModel.startModeling(ticker)
-        # dates = stockModel.getStockDates(ticker)
 
         traindata = dataset["train"]
         train_dates = dataset["traindates"]
@@ -47,8 +53,15 @@ def model():
         predictdata = dataset["predict"]
         predict_dates = dataset['predictdates']
 
-    
-    return render_template("index.html", train=traindata,traindates=train_dates, actual=actualdata, actualdates=actual_dates,  predict=predictdata, predictdates=predict_dates)
+    return render_template("index.html",
+                           train=traindata,
+                           traindates=train_dates,
+                           actual=actualdata,
+                           actualdates=actual_dates,
+                           predict=predictdata,
+                           predictdates=predict_dates,
+                           cName=session['companyname'])
+
 
 if __name__ == '__main__':
     app.run(debug=True)

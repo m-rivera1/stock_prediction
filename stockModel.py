@@ -65,6 +65,8 @@ def startModeling(ticker):
     t = getStockData(ticker)
     df = createDataFrame(t)
 
+    df["Date"] = pd.to_datetime(df.Date, format="%Y-%m-%d")
+    df["Date"] = df.Date.apply(lambda x: x.strftime("%Y-%m-%d"))
     # labelDates = df['Date'].values
 
     trading_days = df['Date'].count()
