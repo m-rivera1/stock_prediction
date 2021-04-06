@@ -1,8 +1,7 @@
-Flask==1.1.2
+Flask
 gunicorn==20.1.0
 matplotlib
-numpy==1.18.5
-numpydoc
+numpy
 pandas
 tensorflow
 yfinance 
