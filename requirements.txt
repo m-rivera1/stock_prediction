@@ -1,9 +1,8 @@
 Flask==1.1.2
 gunicorn==20.1.0
-importlib-metadata @ file:///C:/ci/importlib-metadata_1593446511143/work
-matplotlib @ file:///C:/ci/matplotlib-base_1592837548929/work
+matplotlib
 numpy==1.18.5
-numpydoc @ file:///tmp/build/80754af9/numpydoc_1594166760263/work
+numpydoc
 pandas
 tensorflow==2.2
 matplotlib.pyplot
