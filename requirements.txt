@@ -1,0 +1,17 @@
+Flask==1.1.2
+stockModel
+gunicorn==20.1.0
+importlib-metadata @ file:///C:/ci/importlib-metadata_1593446511143/work
+matplotlib @ file:///C:/ci/matplotlib-base_1592837548929/work
+numpy==1.18.5
+numpydoc @ file:///tmp/build/80754af9/numpydoc_1594166760263/work
+pandas
+tensorflow==2.2
+matplotlib.pyplot
+yfinance 
+requests
+json
+datetime
+matplotlib.pylab
+keras
+sklearn
