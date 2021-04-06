@@ -20,7 +20,7 @@
     <script src="{{ url_for('static', filename='js/showChart.js')}}"></script>
 </head>
 
-<body class="bg-dark">
+<body onload="loaderhide(); displycharts();" class="bg-dark">
     <nav id="navbar" class="s-navbar navbar navbar-fixed-top  navbar-expand-md navbar-light">​
         <div class="collapse navbar-collapse">
             <ul class="px-5 navbar-nav">
@@ -51,7 +51,7 @@
                 </button>
             </form>
         </div>
-        <div class="container-fluid mt-lg-5 pt-lg-5">
+        <div id="chart1" class="container-fluid mt-lg-5 pt-lg-5">
             <h2 class="text-white text-center">{{cName}}</h2>
             <br>
             <canvas id="stockchart" class="text-white"></canvas>
@@ -115,16 +115,16 @@
             </script>
         </div>
         <br>
-        <div class="text-center">
+        <div id="analysis-btn" class="text-center">
             <form action="/stock-analysis" method="POST">
-                <button id="predict" name="run-btn" type="submit" class="btn btn-outline-success">Run Analysis</button>
+                <button id="predict" onclick="displycharts()" name="run-btn" type="submit" class="btn btn-outline-success">Run Analysis</button>
             </form>
         </div>
-        <br>
-        <div class="container-fluid mt-lg-5 pt-lg-5">
+        <div id="chart2" class="container-fluid mt-lg-5 pt-lg-2">
             <h2 class="text-white text-center">Prediction Model Analysis:</h2>
             <h4 class="text-white text-center">({{cName}})</h4>
             <br>
+            <div id="loader"></div>
             <canvas id="analysischart" class="text-white"></canvas>
             <script>
                 var trainData = []
