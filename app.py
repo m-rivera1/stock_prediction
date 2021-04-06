@@ -65,6 +65,10 @@ def model():
                            cName=session['companyname'],
                            accuracy=accuracy)
 
+@app.route("/project-info")
+def info():
+
+    return render_template("code.html")
 
 if __name__ == '__main__':
     app.run(debug=True)

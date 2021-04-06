@@ -161,6 +161,3 @@ def startModeling(ticker):
     }
 
     return data
-
-
-# getStockData('DIS')
