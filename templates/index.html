@@ -117,7 +117,8 @@
         <br>
         <div id="analysis-btn" class="text-center">
             <form action="/stock-analysis" method="POST">
-                <button id="predict" onclick="displycharts()" name="run-btn" type="submit" class="btn btn-outline-success">Run Analysis</button>
+                <button id="predict" onclick="displycharts()" name="run-btn" type="submit"
+                    class="btn btn-outline-success">Run Analysis</button>
             </form>
         </div>
         <div id="chart2" class="container-fluid mt-lg-5 pt-lg-2">
@@ -126,6 +127,11 @@
             <br>
             <div id="loader"></div>
             <canvas id="analysischart" class="text-white"></canvas>
+            <br>
+            <div class=" text-center border border-light rounded col px-2">
+                <h3 class="text-center text-secondary">Model accuracy (%)</h3>
+                <h4 class="text-center text-success">{{accuracy}}</h4>
+            </div>
             <script>
                 var trainData = []
                 var trainDates = []
@@ -157,18 +163,18 @@
                 '{% endfor %}'
 
                 var tData = []
-                for (var i = 0; i < trainData.length; i++){
-                    tData.push({'x': trainDates[i], 'y': trainData[i]});
+                for (var i = 0; i < trainData.length; i++) {
+                    tData.push({ 'x': trainDates[i], 'y': trainData[i] });
                 }
 
                 var aData = []
-                for (var i = 0; i < actualData.length; i++){
-                    aData.push({'x': actualDate[i], 'y': actualData[i]});
+                for (var i = 0; i < actualData.length; i++) {
+                    aData.push({ 'x': actualDate[i], 'y': actualData[i] });
                 }
 
                 var pData = []
-                for (var i = 0; i < predictData.length; i++){
-                    pData.push({'x': predictDate[i], 'y': predictData[i]});
+                for (var i = 0; i < predictData.length; i++) {
+                    pData.push({ 'x': predictDate[i], 'y': predictData[i] });
                 }
 
                 var config = {

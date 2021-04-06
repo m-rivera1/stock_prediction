@@ -52,6 +52,8 @@ def model():
         actual_dates = dataset['actualdates']
         predictdata = dataset["predict"]
         predict_dates = dataset['predictdates']
+        
+        accuracy = dataset['accuracy']
 
     return render_template("index.html",
                            train=traindata,
@@ -60,7 +62,8 @@ def model():
                            actualdates=actual_dates,
                            predict=predictdata,
                            predictdates=predict_dates,
-                           cName=session['companyname'])
+                           cName=session['companyname'],
+                           accuracy=accuracy)
 
 
 if __name__ == '__main__':
