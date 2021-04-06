@@ -4,7 +4,7 @@ matplotlib
 numpy==1.18.5
 numpydoc
 pandas
-tensorflow==2.2
+tensorflow
 matplotlib.pyplot
 yfinance 
 requests
