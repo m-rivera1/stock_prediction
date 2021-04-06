@@ -21,12 +21,26 @@
 </head>
 
 <body class="bg-dark">
+    <nav id="navbar" class="s-navbar navbar navbar-fixed-top  navbar-expand-md navbar-light">​
+        <div class="collapse navbar-collapse">
+            <ul class="px-5 navbar-nav">
+                <li class="nav-item active">
+                    <a class="text-white nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="text-white nav-link">Project Info</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
     <img id="logo" src="{{ url_for('static', filename='images/logo.jpg')}}" alt="Bull vs. Bear" width="88" height="88">
     <main class="container-xxl">
 
         <div class="search-container">
-            <form  action="/get-stock" method="POST" autocomplete="off" role="search" id="form"
-                class="text-center col-xs-12 col-sm-12 col-md-10 col-lg-10">
+            <form action="/get-stock" method="POST" autocomplete="off" role="search" id="searchform"
+                class="text-center col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <input type="text" name="search" id="query" placeholder="Search Company or Stock Ticker...">
                 <button id="searchBtn" type='submit' class='btn-default'>
                     <svg viewBox="0 0 1024 1024">
@@ -39,6 +53,7 @@
         </div>
         <div class="container-fluid mt-lg-5 pt-lg-5">
             <h2 class="text-white text-center">{{cName}}</h2>
+            <br>
             <canvas id="stockchart" class="text-white"></canvas>
             <script>
                 var labels = []
@@ -49,8 +64,6 @@
                 '{% for i in data %}'
                 closeData.push(parseFloat('{{ i }}').toFixed(2))
                 '{% endfor %}'
-                console.log(closeData)
-                console.log(labels)
                 var config = {
                     type: 'line',
                     data: {
@@ -70,11 +83,19 @@
                         },
                         scales: {
                             yAxes: [{
+                                gridLines: {
+                                    color: 'rgba(255,255,255, 0.5)'
+                                },
+                                display: true,
                                 ticks: {
                                     beginAtZero: false
                                 }
                             }],
                             xAxes: [{
+                                gridLines: {
+                                    color: 'rgba(255,255,255, 0.5)'
+                                },
+                                display: true,
                                 type: 'time',
                                 time: {
                                     unitStepSize: 3,
@@ -90,7 +111,129 @@
                 };
 
                 var ctx = document.getElementById('stockchart').getContext("2d");
-                new Chart(ctx, config)            
+                new Chart(ctx, config)
+            </script>
+        </div>
+        <br>
+        <div class="text-center">
+            <form action="/stock-analysis" method="POST">
+                <button id="predict" name="run-btn" type="submit" class="btn btn-outline-success">Run Analysis</button>
+            </form>
+        </div>
+        <br>
+        <div class="container-fluid mt-lg-5 pt-lg-5">
+            <h2 class="text-white text-center">Prediction Model Analysis:</h2>
+            <h4 class="text-white text-center">({{cName}})</h4>
+            <br>
+            <canvas id="analysischart" class="text-white"></canvas>
+            <script>
+                var trainData = []
+                var trainDates = []
+                var actualData = []
+                var actualDate = []
+                var predictData = []
+                var predictDate = []
+
+                '{% for i in actualdates %}'
+                actualDate.push('{{ i }}')
+                '{% endfor %}'
+
+                '{% for i in traindates %}'
+                trainDates.push('{{ i }}')
+                '{% endfor %}'
+
+                '{% for i in predictdates %}'
+                predictDate.push('{{ i }}')
+                '{% endfor %}'
+
+                '{% for i in train %}'
+                trainData.push(parseFloat('{{ i }}').toFixed(2))
+                '{% endfor %}'
+                '{% for i in actual %}'
+                actualData.push(parseFloat('{{ i }}').toFixed(2))
+                '{% endfor %}'
+                '{% for i in predict %}'
+                predictData.push(parseFloat('{{ i }}').toFixed(2))
+                '{% endfor %}'
+
+                var tData = []
+                for (var i = 0; i < trainData.length; i++){
+                    tData.push({'x': trainDates[i], 'y': trainData[i]});
+                }
+
+                var aData = []
+                for (var i = 0; i < actualData.length; i++){
+                    aData.push({'x': actualDate[i], 'y': actualData[i]});
+                }
+
+                var pData = []
+                for (var i = 0; i < predictData.length; i++){
+                    pData.push({'x': predictDate[i], 'y': predictData[i]});
+                }
+
+                var config = {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: "Trained Set",
+                            fill: false,
+                            borderColor: "#008080",
+                            pointRadius: 0,
+                            data: tData
+                        },
+                        {
+                            label: "Actual Set",
+                            fill: false,
+                            borderColor: "#bae755",
+                            pointRadius: 0,
+                            data: aData
+                        },
+                        {
+                            label: "Prediction Set",
+                            fill: false,
+                            borderColor: "#FF5733 ",
+                            pointRadius: 0,
+                            data: pData
+                        }
+
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: {
+                            display: true
+                        },
+                        scales: {
+                            yAxes: [{
+                                gridLines: {
+                                    color: 'rgba(255,255,255, 0.5)'
+                                },
+                                display: true,
+                                ticks: {
+                                    beginAtZero: false
+                                }
+                            }],
+                            xAxes: [{
+                                gridLines: {
+                                    color: 'rgba(255,255,255, 0.5)'
+                                },
+                                display: true,
+                                type: 'time',
+                                time: {
+                                    unitStepSize: 3,
+                                    displayFormats: {
+                                        'day': 'MMM YY',
+                                        'month': 'MMM YY',
+                                        'year': 'MMM YY',
+                                    }
+                                }
+                            }]
+                        }
+                    }
+                };
+
+                var ctx = document.getElementById('analysischart').getContext("2d");
+                new Chart(ctx, config)
             </script>
         </div>
     </main>

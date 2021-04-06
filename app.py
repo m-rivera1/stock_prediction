@@ -9,6 +9,11 @@ app = Flask(__name__, static_folder="static")
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = -1
 
 #-----------------------------------------------#
+#                   Global Variables            # 
+#-----------------------------------------------#
+ticker = ''
+
+#-----------------------------------------------#
 #                   Routes                      # 
 #-----------------------------------------------#
 
@@ -28,7 +33,22 @@ def home():
 
     return render_template("index.html", labels=dates, data=closeData, cName=companyName)
 
+@app.route("/stock-analysis",methods=['GET','POST'])
+def model():
+    if request.method == 'POST':
+        ticker = 'AMZN'
+        dataset = stockModel.startModeling(ticker)
+        # dates = stockModel.getStockDates(ticker)
 
+        traindata = dataset["train"]
+        train_dates = dataset["traindates"]
+        actualdata = dataset["actual"]
+        actual_dates = dataset['actualdates']
+        predictdata = dataset["predict"]
+        predict_dates = dataset['predictdates']
+
+    
+    return render_template("index.html", train=traindata,traindates=train_dates, actual=actualdata, actualdates=actual_dates,  predict=predictdata, predictdates=predict_dates)
 
 if __name__ == '__main__':
     app.run(debug=True)
