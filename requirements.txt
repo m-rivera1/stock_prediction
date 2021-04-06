@@ -5,7 +5,6 @@ numpy==1.18.5
 numpydoc
 pandas
 tensorflow
-matplotlib.pyplot
 yfinance 
 requests
 json
