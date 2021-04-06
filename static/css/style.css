@@ -15,6 +15,26 @@ main {
     width: 100%;
 }
 
+#navbar {
+    float: right;
+}
+
+#navbar ul li {
+    padding-right: 1em;
+}
+
+#predict {
+    color: #bae755 !important;
+    border-color: #bae755 !important;
+    width: fit-content;
+    height: min-content;
+}
+
+#predict:hover {
+    color: #fff !important;
+    font-weight: bold !important;
+}
+
 .search-container {
     position: relative;
     left: 250px;
@@ -24,7 +44,7 @@ main {
     height: 44px;
 }
 
-form {
+#searchform {
     background-color: rgba(212, 212, 212, 0.1);
     height: 44px;
     border-radius: 5px;
