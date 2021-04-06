@@ -7,7 +7,6 @@ pandas
 tensorflow
 yfinance 
 requests
-json
 datetime
 keras
 sklearn
