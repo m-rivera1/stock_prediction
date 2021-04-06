@@ -52,35 +52,37 @@
     <br>
     <h4>The code examples below show how our Stocks Prediction model was built.</h4>
     <div>
+      <p><em>Libraries</em></p>
       <img class="border border-1 border-light mb-3" src="{{ url_for('static', filename='images/libraries.png')}}" alt="Libraries">
       <img class="border border-1 border-light mb-1" src="{{ url_for('static', filename='images/libraries-2.png')}}" alt="Libraries">
-
-      <p><em>Libraries</em></p>
       <br>
       <h5>The libraries imported into our file.</h5>
     </div>
     <hr>
     <article>
+      <p><em>Obtaining Stock Ticker Information</em></p>
         <img class="border border-1 border-light mb-3" src="{{ url_for('static', filename='images/tickers.png')}}" alt="Tickers">
         <img class="border border-1 border-light mb-1" src="{{ url_for('static', filename='images/names.png')}}" alt="Ticker Names">
-
-      <p><em>Obtaining Stock Ticker Information</em></p>
       <br>
       <h5>The queries above is used to obtain the list of stock tickers and associated company names from Yahoo Finance
         API</h5>
     </article>
     <hr>
     <article>
-        <img class="border border-1 border-light mb-1" src="{{ url_for('static', filename='images/stocks.png')}}" alt="Stock Open and Close Data">
       <p><em>Retrieving Stock Open and Close Dates</em></p>
+        <img class="border border-1 border-light mb-1" src="{{ url_for('static', filename='images/stocks.png')}}" alt="Stock Open and Close Data">
       <h5>This query obtains the stocks' values at each open and close date and time using API from Yahoo Finance.</h5>
     </article>
     <hr>
     <article>
+      <p><em>Training the Stock Data</em></p>
         <img class="border border-1 border-light mb-3" src="{{ url_for('static', filename='images/training-1.png')}}" alt="Training the Data">
         <img class="border border-1 border-light mb-1" src="{{ url_for('static', filename='images/training-2.png')}}" alt="Training the Data">
-      <p><em>Training the Stock Data</em></p>
-      <h5>In order to make stock predictions, we must train the data to</h5>
+      <h5>In order to make stock predictions, we have to transform the data to be able to operate the prediction model. We also have to train the shape of the graph and ensure the data is clean using ETL.</h5>
+      <p><em>ETL for the stock prediction model</em></p>
+      <img class="border border-1 border-light mb-3" src="{{ url_for('static', filename='images/training-3.png')}}" alt="Training the Data">
+      <img class="border border-1 border-light mb-1" src="{{ url_for('static', filename='images/training-4.png')}}" alt="Training the Data">
+    
     </article>
     <hr><br>
     <article>
