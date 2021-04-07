@@ -18,7 +18,7 @@ ticker = ''
 #-----------------------------------------------#
 
 
-@app.route("/")
+@app.route("/Home")
 def default():
 
     return render_template("index.html")
