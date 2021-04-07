@@ -6,4 +6,3 @@ yfinance==0.1.59
 requests==2.24.0
 Keras==2.4.3
 sklearn==0.0
-tensorflow

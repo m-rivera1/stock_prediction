@@ -3,11 +3,7 @@ import numpy as np
 import tensorflow
 import yfinance as yf
 import requests
-import json
-import datetime as dt
 
-# from matplotlib.pylab import rcParams
-# rcParams['figure.figsize'] = 20, 10
 from keras.models import Sequential
 from keras.layers import LSTM, Dropout, Dense
 from sklearn.preprocessing import MinMaxScaler
