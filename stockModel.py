@@ -3,11 +3,7 @@ import numpy as np
 import tensorflow
 import yfinance as yf
 import requests
-import json
-import datetime as dt
 
-# from matplotlib.pylab import rcParams
-# rcParams['figure.figsize'] = 20, 10
 from keras.models import Sequential
 from keras.layers import LSTM, Dropout, Dense
 from sklearn.preprocessing import MinMaxScaler
@@ -65,13 +61,16 @@ def startModeling(ticker):
     t = getStockData(ticker)
     df = createDataFrame(t)
 
+    df["Date"] = pd.to_datetime(df.Date, format="%Y-%m-%d")
+    df["Date"] = df.Date.apply(lambda x: x.strftime("%Y-%m-%d"))
     # labelDates = df['Date'].values
 
     trading_days = df['Date'].count()
     training_set = .7 * trading_days
 
     data = df.sort_index(ascending=True, axis=0)
-    new_dataset = pd.DataFrame(index=range(0, len(df)), columns=['Date', 'Close'])
+    new_dataset = pd.DataFrame(index=range(0, len(df)),
+                               columns=['Date', 'Close'])
     for i in range(0, len(data)):
         new_dataset["Date"][i] = data['Date'][i]
         new_dataset["Close"][i] = data["Close"][i]
@@ -94,14 +93,22 @@ def startModeling(ticker):
         y_train_data.append(scaled_data[i, 0])
 
     x_train_data, y_train_data = np.array(x_train_data), np.array(y_train_data)
-    x_train_data = np.reshape(x_train_data,(x_train_data.shape[0], x_train_data.shape[1], 1))
+    x_train_data = np.reshape(
+        x_train_data, (x_train_data.shape[0], x_train_data.shape[1], 1))
 
     lstm_model = Sequential()
-    lstm_model.add(LSTM(units=50,return_sequences=True,input_shape=(x_train_data.shape[1], 1)))
+    lstm_model.add(
+        LSTM(units=50,
+             return_sequences=True,
+             input_shape=(x_train_data.shape[1], 1)))
     lstm_model.add(LSTM(units=50))
     lstm_model.add(Dense(1))
     lstm_model.compile(loss='mean_squared_error', optimizer='adam')
-    lstm_model.fit(x_train_data, y_train_data, epochs=3, batch_size=3, verbose=2)
+    lstm_model.fit(x_train_data,
+                   y_train_data,
+                   epochs=3,
+                   batch_size=3,
+                   verbose=2)
 
     inputs_data = new_dataset[len(new_dataset) - len(valid_data) - 60:].values
     inputs_data = inputs_data.reshape(-1, 1)
@@ -120,7 +127,11 @@ def startModeling(ticker):
     valid_data = new_dataset[int(training_set):]
     valid_data['Predictions'] = predicted_closing_price
 
-    closing_data_df = pd.DataFrame({"TrainData": train_data['Close'], "ActualData": valid_data['Close'], "PredictedData": valid_data['Predictions']})
+    closing_data_df = pd.DataFrame({
+        "TrainData": train_data['Close'],
+        "ActualData": valid_data['Close'],
+        "PredictedData": valid_data['Predictions']
+    })
 
     train = closing_data_df['TrainData'].dropna().values
     train_dates = closing_data_df['TrainData'].dropna().index.values
@@ -129,8 +140,20 @@ def startModeling(ticker):
     predict = closing_data_df['PredictedData'].dropna().values
     predict_dates = closing_data_df['PredictedData'].dropna().index.values
 
-    data = {'train':train, 'traindates':train_dates, 'actual':actual, 'actualdates':actual_dates, 'predict':predict, 'predictdates':predict_dates}
+    Y_p = scaler.inverse_transform(lstm_model.predict(x_train_data))
+    Y_t = scaler.inverse_transform(
+        y_train_data.reshape(y_train_data.shape[0], 1))
+    accuracy = round(
+        (1 - (metrics.mean_absolute_error(Y_t, Y_p) / Y_t.mean())) * 100, 2)
+
+    data = {
+        'train': train,
+        'traindates': train_dates,
+        'actual': actual,
+        'actualdates': actual_dates,
+        'predict': predict,
+        'predictdates': predict_dates,
+        'accuracy': accuracy
+    }
 
     return data
-
-# getStockData('DIS')
